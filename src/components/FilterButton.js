@@ -1,9 +1,10 @@
 import React from "react";
 import {Button} from 'react-bootstrap';
+
 function FilterButton(props) {
   return (
     <Button
-      variant="outline-primary"
+      variant={props.color}
       size="sm"
       type="button"
       className="btn toggle-btn"

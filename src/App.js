@@ -33,6 +33,7 @@ function App(props) {
       name={name}
       isPressed={name === filter}
       setFilter={setFilter}
+      color={name === filter?'btn btn-primary':"outline-primary"}
     />
   ));
 
@@ -55,15 +56,23 @@ function App(props) {
   }
 
   function editTask(id, newName) {
+    if (newName){
+    
     const editedTaskList = tasks.map((task) => {
       // if this task has the same ID as the edited task
+           
       if (id === task.id) {
         return { ...task, name: newName };
       }
       return task;
+      
     });
     setTasks(editedTaskList);
   }
+  else{
+    alert("Please input something");
+  }
+}
 
   const taskList = tasks
     .filter(FILTER_MAP[filter])
@@ -80,8 +89,14 @@ function App(props) {
     ));
 
   function addTask(name) {
-    const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
-    setTasks([...tasks, newTask]);
+    if(name){
+      const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
+      setTasks([...tasks, newTask]);
+    }
+    else{
+      alert("Please input something");
+    }
+    
   }
 
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
