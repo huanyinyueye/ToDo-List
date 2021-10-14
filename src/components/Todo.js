@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Form, Button} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, ToggleButton } from "react-bootstrap";
 
 
 function usePrevious(value) {
@@ -35,74 +35,74 @@ export default function Todo(props) {
       editButtonRef.current.focus();
     }
   }, [wasEditing, isEditing]);
-  
-  console.log("main render");
 
+  console.log("main render");
+  const [checked, setChecked] = useState(false);
   const editingTemplate = (
     <Form className="stack-small" onSubmit={handleSubmit}>
       <Form.Group className="mb-3">
         <Form.Label htmlFor={props.id}>
-          New name for {props.name}
+          Edit name of <strong><mark>{props.name}</mark></strong>
         </Form.Label>
-        <Form.Control
-          id={props.id}
-          className="todo-text"
-          type="text"
-          value={newName}
-          onChange={handleChange}
-          ref={editFieldRef}
-          placeholder="Enter the task you want to modify"
-        />
+          <Form.Control
+            id={props.id}
+            className="todo-text"
+            type="text"
+            value={newName}
+            onChange={handleChange}
+            ref={editFieldRef}
+            placeholder="Enter new name of this task"
+          />
       </Form.Group>
-        <Button
-          variant="danger"
-          size="sm"
-          type="button"
-          onClick={() => setEditing(false)}
-        >
-          Cancel
-          <span className="visually-hidden">renaming {props.name}</span>
-        </Button>{' '}
-        <Button 
-          variant="primary" 
-          size="sm"
-          type="submit">
-          Save
-          <span className="visually-hidden">new name for {props.name}</span>
-        </Button>{' '}
+      <Button
+        variant="danger"
+        size="sm"
+        type="button"
+        onClick={() => setEditing(false)}
+      >
+        Cancel
+        <span className="visually-hidden">renaming {props.name}</span>
+      </Button>{' '}
+      <Button
+        variant="primary"
+        size="sm"
+        type="submit">
+        Save
+        <span className="visually-hidden">new name for {props.name}</span>
+      </Button>{' '}
     </Form>
   );
   const viewTemplate = (
-    <div className="stack-small">
-      <div className="c-cb">
-        <input
-          id={props.id}
-          type="checkbox"
-          defaultChecked={props.completed}
-          onChange={() => props.toggleTaskCompleted(props.id)}
-        />
-        <label className="todo-label" htmlFor={props.id}>
-          {props.name}
-        </label>
-      </div>
-        <Button
-          variant="outline-primary"
-          size="sm"
-          type="button"
-          onClick={() => setEditing(true)}
-          ref={editButtonRef}
-        >
-          Edit <span className="visually-hidden">{props.name}</span>
-        </Button>{" "}
-        <Button
-          variant="outline-danger"
-          size="sm"
-          type="button"
-          onClick={() => props.deleteTask(props.id)}
-        >
-          Delete <span className="visually-hidden">{props.name}</span>
-        </Button>
-    </div>
+    <Container>
+      <Row className="stack-small">
+        <Col xs="auto" md="auto">
+          <ToggleButton
+            className="mb-2"
+            id={props.id}
+            type="checkbox"
+            variant="outline-secondary"
+            checked={props.completed}
+            size="sm"
+            value="1"
+            onChange={() => props.toggleTaskCompleted(props.id)}
+          >
+            Checked
+          </ToggleButton>
+        </Col>
+        <Col xs="auto" md="auto" className="todo-label" htmlFor={props.id}>
+          <strong><mark>{props.name}</mark></strong>
+        </Col>
+
+        <Col>
+          <Button variant="outline-primary" size="sm" type="button" onClick={() => setEditing(true)} ref={editButtonRef}>
+            Edit <span className="visually-hidden">{props.name}</span>
+          </Button>
+          <Button variant="outline-danger" size="sm" type="button" onClick={() => props.deleteTask(props.id)}>
+            Delete <span className="visually-hidden">{props.name}</span>
+          </Button>
+        </Col>
+      </Row>
+    </Container>
   );
 
 

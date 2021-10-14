@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import MyForm from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import { nanoid } from "nanoid";
-import { Card, Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const FILTER_MAP = {
@@ -23,9 +23,9 @@ function usePrevious(value) {
 }
 
 function App(props) {
-  const [tasks, setTasks] = useState(props.tasks);
-  const [filter, setFilter] = useState("AllTask");
-  const listHeadingRef = useRef(null);
+  const [tasks, setTasks] = useState(props.tasks);    // Add,Edit,Delete tasks
+  const [filter, setFilter] = useState("AllTask");    // Filter button
+  const listHeadingRef = useRef(null);            
   const prevTaskLength = usePrevious(tasks.length);
   const filterList = FILTER_NAMES.map((name) => (
     <FilterButton
@@ -33,17 +33,14 @@ function App(props) {
       name={name}
       isPressed={name === filter}
       setFilter={setFilter}
-      color={name === filter?'btn btn-primary':"outline-primary"}
+      color={name === filter?'btn btn-primary':"outline-primary"}    //Change the color of filter button when choosed
     />
   ));
 
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map((task) => {
-      // if this task has the same ID as the edited task
-      if (id === task.id) {
-        // use object spread to make a new object
-        // whose `completed` prop has been inverted
-        return { ...task, completed: !task.completed };
+      if (id === task.id) {                                 // if this task has the same ID as the edited task
+        return { ...task, completed: !task.completed};     // use object spread to make a new object whose `completed` prop has been inverted
       }
       return task;
     });
@@ -59,19 +56,16 @@ function App(props) {
     if (newName){
     
     const editedTaskList = tasks.map((task) => {
-      // if this task has the same ID as the edited task
-           
-      if (id === task.id) {
+      if (id === task.id) {                             // if this task has the same ID as the edited task
         return { ...task, name: newName };
       }
       return task;
-      
     });
     setTasks(editedTaskList);
-  }
-  else{
-    alert("Please input something");
-  }
+    }
+    else{
+      alert("Please input something");                    // Alert when no data has been entered
+    }
 }
 
   const taskList = tasks
@@ -94,7 +88,7 @@ function App(props) {
       setTasks([...tasks, newTask]);
     }
     else{
-      alert("Please input something");
+      alert("Please input something");              // Alert when no data has been entered
     }
     
   }
@@ -110,22 +104,32 @@ function App(props) {
 
   return (
     <Container>
-      <Card  className="col-md-5 mx-auto">
-        <Card.Body>
-          <Card.Title>Cool TODO-List</Card.Title>
-          <MyForm addTask={addTask} />
-          <div className="filters btn-group stack-exception">{filterList}</div>
-          <Card.Title id="list-heading" tabIndex="-1" ref={listHeadingRef}>
+          <Row>
+            <Col>
+              <h3>
+                Cool TODO-List {" "}
+              </h3>
+              <h4><small class="text-muted">Help you to record the future events</small></h4>
+            </Col> 
+          </Row>
+
+          <Row>
+            <MyForm addTask={addTask} />  {" "}
+          </Row>
+
+          <Row>
+            <Col className="filters btn-group stack-exception">{filterList}</Col>
+          </Row>
+
+          <Row id="list-heading" tabIndex="-1" ref={listHeadingRef}>
             {headingText}
-          </Card.Title>
-          <ul
-            role="list"
-            aria-labelledby="list-heading"
-          >
-            {taskList}
-          </ul>
-        </Card.Body>
-      </Card>
+          </Row>
+
+          <Row>
+            <Col role="list">
+             {taskList}
+            </Col>
+          </Row>
     </Container>
   );
 }
