@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import MyForm from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import { nanoid } from "nanoid";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Image, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const FILTER_MAP = {
@@ -25,7 +25,7 @@ function usePrevious(value) {
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks);    // Add,Edit,Delete tasks
   const [filter, setFilter] = useState("AllTask");    // Filter button
-  const listHeadingRef = useRef(null);            
+  const listHeadingRef = useRef(null);
   const prevTaskLength = usePrevious(tasks.length);
   const filterList = FILTER_NAMES.map((name) => (
     <FilterButton
@@ -33,14 +33,14 @@ function App(props) {
       name={name}
       isPressed={name === filter}
       setFilter={setFilter}
-      color={name === filter?'btn btn-primary':"outline-primary"}    //Change the color of filter button when choosed
+      color={name === filter ? 'btn btn-primary btn-lg' : "btn btn-secondary btn-lg"}    //Change the color of filter button when choosed
     />
   ));
 
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map((task) => {
       if (id === task.id) {                                 // if this task has the same ID as the edited task
-        return { ...task, completed: !task.completed};     // use object spread to make a new object whose `completed` prop has been inverted
+        return { ...task, completed: !task.completed };     // use object spread to make a new object whose `completed` prop has been inverted
       }
       return task;
     });
@@ -53,20 +53,20 @@ function App(props) {
   }
 
   function editTask(id, newName) {
-    if (newName){
-    
-    const editedTaskList = tasks.map((task) => {
-      if (id === task.id) {                             // if this task has the same ID as the edited task
-        return { ...task, name: newName };
-      }
-      return task;
-    });
-    setTasks(editedTaskList);
+    if (newName) {
+
+      const editedTaskList = tasks.map((task) => {
+        if (id === task.id) {                             // if this task has the same ID as the edited task
+          return { ...task, name: newName };
+        }
+        return task;
+      });
+      setTasks(editedTaskList);
     }
-    else{
+    else {
       alert("Please input something");                    // Alert when no data has been entered
     }
-}
+  }
 
   const taskList = tasks
     .filter(FILTER_MAP[filter])
@@ -83,14 +83,14 @@ function App(props) {
     ));
 
   function addTask(name) {
-    if(name){
+    if (name) {
       const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
       setTasks([...tasks, newTask]);
     }
-    else{
+    else {
       alert("Please input something");              // Alert when no data has been entered
     }
-    
+
   }
 
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
@@ -103,34 +103,41 @@ function App(props) {
   }, [tasks.length, prevTaskLength]);
 
   return (
-    <Container>
-          <Row>
-            <Col>
-              <h3>
-                Cool TODO-List {" "}
-              </h3>
-              <h4><small class="text-muted">Help you to record the future events</small></h4>
-            </Col> 
-          </Row>
+    <div class="p-3 mb-2 bg-dark text-white">
+      <Container >
+        <Row>
+          <Col>
+            <blockquote class="blockquote text-center">
+              <h1>
+                Cool To-Do List
+              </h1>
+              <h3><strong><small class="text-muted">Help you to record the future events</small></strong></h3>
+            </blockquote>
+          </Col>
+          <br>
+          </br>
+        </Row>
 
-          <Row>
-            <MyForm addTask={addTask} />  {" "}
-          </Row>
+        <Row>
+          <MyForm addTask={addTask} />
+        </Row>
 
-          <Row>
-            <Col className="filters btn-group stack-exception">{filterList}</Col>
-          </Row>
+        <Row>
+          <Col className="filters btn-group stack-exception">{filterList}</Col>
+        </Row>
+        <br>
+        </br>
+        <Row id="list-heading" tabIndex="-1" ref={listHeadingRef}>
+          {headingText}
+        </Row>
 
-          <Row id="list-heading" tabIndex="-1" ref={listHeadingRef}>
-            {headingText}
-          </Row>
-
-          <Row>
-            <Col role="list">
-             {taskList}
-            </Col>
-          </Row>
-    </Container>
+        <Row>
+          <Col>
+            {taskList}
+          </Col>
+        </Row>
+      </Container >
+    </div>
   );
 }
 export default App;

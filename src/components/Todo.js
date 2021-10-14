@@ -39,11 +39,12 @@ export default function Todo(props) {
   console.log("main render");
   const [checked, setChecked] = useState(false);
   const editingTemplate = (
-    <Form className="stack-small" onSubmit={handleSubmit}>
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor={props.id}>
-          Edit name of <strong><mark>{props.name}</mark></strong>
-        </Form.Label>
+    <Container>
+      <Form className="stack-small" onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label htmlFor={props.id}>
+            <h4>Edit name of "<strong>{props.name}</strong>"</h4>
+          </Form.Label>
           <Form.Control
             id={props.id}
             className="todo-text"
@@ -53,24 +54,17 @@ export default function Todo(props) {
             ref={editFieldRef}
             placeholder="Enter new name of this task"
           />
-      </Form.Group>
-      <Button
-        variant="danger"
-        size="sm"
-        type="button"
-        onClick={() => setEditing(false)}
-      >
-        Cancel
-        <span className="visually-hidden">renaming {props.name}</span>
-      </Button>{' '}
-      <Button
-        variant="primary"
-        size="sm"
-        type="submit">
-        Save
-        <span className="visually-hidden">new name for {props.name}</span>
-      </Button>{' '}
-    </Form>
+        </Form.Group>
+        <Button variant="primary" size="md" type="submit">
+          Save
+          <span className="visually-hidden"> new name for {props.name}</span>
+        </Button>{' '}
+        <Button variant="danger" size="md" type="button" onClick={() => setEditing(false)}>
+          Cancel
+          <span className="visually-hidden"> renaming {props.name}</span>
+        </Button>{' '}
+      </Form>
+    </Container>
   );
   const viewTemplate = (
     <Container>
@@ -80,31 +74,32 @@ export default function Todo(props) {
             className="mb-2"
             id={props.id}
             type="checkbox"
-            variant="outline-secondary"
+            variant="outline-light"
             checked={props.completed}
-            size="sm"
+            size="md"
             value="1"
             onChange={() => props.toggleTaskCompleted(props.id)}
           >
-            Checked
+            Done
           </ToggleButton>
         </Col>
         <Col xs="auto" md="auto" className="todo-label" htmlFor={props.id}>
-          <strong><mark>{props.name}</mark></strong>
+          <h3><strong>{props.name}</strong></h3>
         </Col>
-
-        <Col>
-          <Button variant="outline-primary" size="sm" type="button" onClick={() => setEditing(true)} ref={editButtonRef}>
+      </Row>
+      <Row>
+        <Col text-right>
+          <Button variant="outline-info" size="md" type="button" onClick={() => setEditing(true)} ref={editButtonRef}>
             Edit <span className="visually-hidden">{props.name}</span>
-          </Button>
-          <Button variant="outline-danger" size="sm" type="button" onClick={() => props.deleteTask(props.id)}>
+          </Button>{' '}
+
+          <Button variant="outline-danger" size="md" type="button" onClick={() => props.deleteTask(props.id)}>
             Delete <span className="visually-hidden">{props.name}</span>
-          </Button>
+          </Button>{' '}
         </Col>
       </Row>
     </Container>
   );
-
 
   return <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>;
 }

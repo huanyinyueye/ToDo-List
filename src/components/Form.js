@@ -13,7 +13,7 @@ function MyForm(props) {
     setName("");
   }
   return (
-    <Container>
+    <Container className="justify-content-md-center">
 
       <Form onSubmit={handleSubmit}>
         <Row>
@@ -30,8 +30,8 @@ function MyForm(props) {
             />
           </Col>
           <Col>
-            <Button type="submit" variant="outline-success" size="sm">
-              Add
+            <Button type="submit" variant="success" size="md">
+              <strong>Add</strong>
             </Button>
           </Col>
         </Row>
@@ -41,8 +41,6 @@ function MyForm(props) {
             </br>
           </Col>
         </Row>
-
-
       </Form>
     </Container >
 
