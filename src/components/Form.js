@@ -16,8 +16,12 @@ function MyForm(props) {
     <Container className="justify-content-md-center">
 
       <Form onSubmit={handleSubmit}>
-        <Row>
+        <Row className="justify-content-md-center">
           <Col>
+            <br>
+            </br>
+          </Col>
+          <Col xs={8} md={10} lg={10}>
             <Form.Control
               type="text"
               id="new-todo-input"
@@ -31,7 +35,7 @@ function MyForm(props) {
           </Col>
           <Col>
             <Button type="submit" variant="success" size="md">
-              <strong>Add</strong>
+              Add
             </Button>
           </Col>
         </Row>

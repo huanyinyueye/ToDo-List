@@ -119,7 +119,7 @@ function App(props) {
         </Row>
 
         <Row>
-          <MyForm addTask={addTask} />
+            <MyForm addTask={addTask} />
         </Row>
 
         <Row>

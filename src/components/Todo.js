@@ -55,11 +55,11 @@ export default function Todo(props) {
             placeholder="Enter new name of this task"
           />
         </Form.Group>
-        <Button variant="primary" size="md" type="submit">
+        <Button variant="btn btn-outline-info" size="md" type="submit">
           Save
           <span className="visually-hidden"> new name for {props.name}</span>
         </Button>{' '}
-        <Button variant="danger" size="md" type="button" onClick={() => setEditing(false)}>
+        <Button variant="outline-danger" size="md" type="button" onClick={() => setEditing(false)}>
           Cancel
           <span className="visually-hidden"> renaming {props.name}</span>
         </Button>{' '}

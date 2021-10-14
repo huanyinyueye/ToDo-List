@@ -4,8 +4,9 @@ import {Button} from 'react-bootstrap';
 function FilterButton(props) {
   return (
     <Button
+     
       variant={props.color}
-      size="sm"
+      size="md"
       type="button"
       className="btn toggle-btn"
       aria-pressed={props.isPressed}
