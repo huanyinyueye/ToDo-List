@@ -5,13 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 
+
+
 const DATA = [
-  
+    //{ id: localStorage.key(0), name: localStorage.getItem(localStorage.key(0)), completed: false }
 ];
 
 ReactDOM.render(
   <React.StrictMode>
-    <App tasks={DATA} />
+      <App tasks={DATA}/>    
   </React.StrictMode>,
   document.getElementById('root')
 );

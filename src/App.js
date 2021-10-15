@@ -47,8 +47,13 @@ function App(props) {
     setTasks(updatedTasks);
   }
 
+  function deletelocal(name){
+    localStorage.removeItem(name)
+  }
+
   function deleteTask(id) {
     const remainingTasks = tasks.filter((task) => id !== task.id);
+    localStorage.removeItem(id);
     setTasks(remainingTasks);
   }
 
@@ -61,6 +66,7 @@ function App(props) {
         }
         return task;
       });
+      localStorage.setItem(id, newName)
       setTasks(editedTaskList);
     }
     else {
@@ -85,6 +91,7 @@ function App(props) {
   function addTask(name) {
     if (name) {
       const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
+      localStorage.setItem(newTask.id, name)
       setTasks([...tasks, newTask]);
     }
     else {
@@ -92,6 +99,7 @@ function App(props) {
     }
 
   }
+  
 
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
   const headingText = `${taskList.length} ${tasksNoun} remaining`;
