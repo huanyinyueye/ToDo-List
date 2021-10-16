@@ -47,6 +47,25 @@ function App(props) {
     setTasks(updatedTasks);
   }
 
+
+  function allStorage() {
+    let values = [];
+    const keys = Object.keys(localStorage);
+    let i = keys.length;
+
+
+    while ( i-- ) {
+        if (!keys[i].includes("todo")) return;
+        console.log('run')
+        values.push({ id:keys[i], name: localStorage.getItem(keys[i]), completed: false });
+    }
+    return values;
+}
+
+  useEffect(() => {
+    setTasks(allStorage())
+  }, []);
+
   function deletelocal(name){
     localStorage.removeItem(name)
   }
