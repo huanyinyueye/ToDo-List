@@ -39,12 +39,16 @@ function App(props) {
   ));
 
   function toggleTaskCompleted(id) {
+    var ls = localStorage.getItem(id);
+    
     const updatedTasks = tasks.map((task) => {
-      if (id === task.id) {                                 // if this task has the same ID as the edited task
+      if (id === task.id) {    
+        localStorage.setItem(id, JSON.stringify({name:JSON.parse(ls).name,completed: !task.completed}));                             // if this task has the same ID as the edited task
         return { ...task, completed: !task.completed };     // use object spread to make a new object whose `completed` prop has been inverted
       }
       return task;
     });
+     
     setTasks(updatedTasks);
   }
 
@@ -56,9 +60,11 @@ function App(props) {
 
 
     while ( i-- ) {
-        if (!keys[i].includes("todo")) return;
+      var ls = localStorage.getItem(keys[i]);
+
+      if (!keys[i].includes("todo")) return;
         console.log('run')
-        values.push({ id:keys[i], name: localStorage.getItem(keys[i]).name,completed: localStorage.getItem(keys[i]).completed });
+        values.push({ id:keys[i], name: JSON.parse(ls).name,completed:JSON.parse(ls).completed });
     }
     return values;
   }
@@ -78,12 +84,13 @@ function App(props) {
     if (newName) {
 
       const editedTaskList = tasks.map((task) => {
-        if (id === task.id) {                             // if this task has the same ID as the edited task
+        if (id === task.id) {         // if this task has the same ID as the edited task
           return { ...task, name: newName };
         }
         return task;
       });
-      localStorage.setItem(id, newName)
+      var ls = localStorage.getItem(id);
+      localStorage.setItem(id, JSON.stringify({name:newName,completed: JSON.parse(ls).completed})); 
       setTasks(editedTaskList);
     }
     else {
@@ -108,7 +115,7 @@ function App(props) {
   function addTask(name) {
     if (name) {
       const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
-      localStorage.setItem(newTask.id, {name:name,completed:false})
+      localStorage.setItem(newTask.id,JSON.stringify({name:name,completed:false}))
       setTasks([...tasks, newTask]);
     }
     else {

@@ -69,24 +69,25 @@ export default function Todo(props) {
   const viewTemplate = (
     <Container>
       <Row className="stack-small">
-        <Col xs="auto" md="auto">
+        <Col xs={2} md="auto">
           <ToggleButton
             className="mb-2"
             id={props.id}
+            var ls = {localStorage.getItem(props.id)}
             type="checkbox"
             variant="outline-light"
             checked={props.completed}
             size="md"
             value="1"
-            onChange={() => props.toggleTaskCompleted(props.id)}
+            onChange={() => {props.toggleTaskCompleted(props.id)}}
           >
             <BsCheckLg></BsCheckLg>
           </ToggleButton>
         </Col>
-        <Col xs="auto" md="auto" className="todo-label" htmlFor={props.id}>
+        <Col xs={14} md={8} className="todo-label" htmlFor={props.id}>
           <h3><strong>{props.name}</strong></h3>
         </Col>
-        <Col text-right>
+        <Col md="auto">
           <Button variant="outline-info" size="md" type="button" onClick={() => setEditing(true)} ref={editButtonRef}>
             <BsFillPencilFill></BsFillPencilFill><span className="visually-hidden">{props.name}</span>
           </Button>{' '}
