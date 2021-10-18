@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Stack, Row, Col } from "react-bootstrap";
 
+import { BsPlusLg } from "react-icons/bs";
+
 function MyForm(props) {
   const [name, setName] = useState("");
 
@@ -35,7 +37,7 @@ function MyForm(props) {
           </Col>
           <Col>
             <Button type="submit" variant="success" size="md">
-              Add
+              <BsPlusLg></BsPlusLg>
             </Button>
           </Col>
         </Row>

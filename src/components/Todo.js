@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { Container, Row, Col, Form, Button, ToggleButton } from "react-bootstrap";
-
+import { BsFillTrashFill,BsFillPencilFill,BsCheckLg,BsSave2Fill,BsFillSlashCircleFill, BsSlashCircleFill } from "react-icons/bs";
 
 function usePrevious(value) {
   const ref = useRef();
@@ -56,11 +56,11 @@ export default function Todo(props) {
           />
         </Form.Group>
         <Button variant="btn btn-outline-info" size="md" type="submit">
-          Save
+          <BsSave2Fill></BsSave2Fill>
           <span className="visually-hidden"> new name for {props.name}</span>
         </Button>{' '}
         <Button variant="outline-danger" size="md" type="button" onClick={() => setEditing(false)}>
-          Cancel
+          <BsSlashCircleFill></BsSlashCircleFill>
           <span className="visually-hidden"> renaming {props.name}</span>
         </Button>{' '}
       </Form>
@@ -80,21 +80,19 @@ export default function Todo(props) {
             value="1"
             onChange={() => props.toggleTaskCompleted(props.id)}
           >
-            Done
+            <BsCheckLg></BsCheckLg>
           </ToggleButton>
         </Col>
         <Col xs="auto" md="auto" className="todo-label" htmlFor={props.id}>
           <h3><strong>{props.name}</strong></h3>
         </Col>
-      </Row>
-      <Row>
         <Col text-right>
           <Button variant="outline-info" size="md" type="button" onClick={() => setEditing(true)} ref={editButtonRef}>
-            Edit <span className="visually-hidden">{props.name}</span>
+            <BsFillPencilFill></BsFillPencilFill><span className="visually-hidden">{props.name}</span>
           </Button>{' '}
 
           <Button variant="outline-danger" size="md" type="button" onClick={() => props.deleteTask(props.id)}>
-            Delete <span className="visually-hidden">{props.name}</span>
+             <BsFillTrashFill></BsFillTrashFill><span className="visually-hidden">{props.name}</span>
           </Button>{' '}
         </Col>
       </Row>

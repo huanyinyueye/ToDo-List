@@ -7,6 +7,7 @@ import { nanoid } from "nanoid";
 import { Container, Row, Col, Image, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
 const FILTER_MAP = {
   AllTask: () => true,
   Active: (task) => !task.completed,
@@ -57,18 +58,15 @@ function App(props) {
     while ( i-- ) {
         if (!keys[i].includes("todo")) return;
         console.log('run')
-        values.push({ id:keys[i], name: localStorage.getItem(keys[i]), completed: false });
+        values.push({ id:keys[i], name: localStorage.getItem(keys[i]).name,completed: localStorage.getItem(keys[i]).completed });
     }
     return values;
-}
+  }
 
   useEffect(() => {
     setTasks(allStorage())
   }, []);
 
-  function deletelocal(name){
-    localStorage.removeItem(name)
-  }
 
   function deleteTask(id) {
     const remainingTasks = tasks.filter((task) => id !== task.id);
@@ -110,7 +108,7 @@ function App(props) {
   function addTask(name) {
     if (name) {
       const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
-      localStorage.setItem(newTask.id, name)
+      localStorage.setItem(newTask.id, {name:name,completed:false})
       setTasks([...tasks, newTask]);
     }
     else {
