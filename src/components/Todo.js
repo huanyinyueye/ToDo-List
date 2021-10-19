@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import { Container, Row, Col, Form, Button, ToggleButton } from "react-bootstrap";
 import { BsFillTrashFill,BsFillPencilFill,BsCheckLg,BsSave2Fill,BsFillSlashCircleFill, BsSlashCircleFill } from "react-icons/bs";
 
-function usePrevious(value) {
+function usePrevious(value) { 
   const ref = useRef();
   useEffect(() => {
     ref.current = value;
@@ -37,11 +36,11 @@ export default function Todo(props) {
   }, [wasEditing, isEditing]);
 
   console.log("main render");
-  const [checked, setChecked] = useState(false);
+  //const [checked, setChecked] = useState(false);
   const editingTemplate = (
-    <Container>
+    <Container>  
       <Form className="stack-small" onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3">   
           <Form.Label htmlFor={props.id}>
             <h4>Edit name of "<strong>{props.name}</strong>"</h4>
           </Form.Label>
@@ -69,7 +68,7 @@ export default function Todo(props) {
   const viewTemplate = (
     <Container>
       <Row className="stack-small">
-        <Col xs={2} md="auto">
+        <Col xs={2} md="auto" >
           <ToggleButton
             className="mb-2"
             id={props.id}
@@ -84,10 +83,10 @@ export default function Todo(props) {
             <BsCheckLg></BsCheckLg>
           </ToggleButton>
         </Col>
-        <Col xs={14} md={8} className="todo-label" htmlFor={props.id}>
+        <Col xs={6} md={10} className="todo-label" htmlFor={props.id}>
           <h3><strong>{props.name}</strong></h3>
         </Col>
-        <Col md="auto">
+        <Col xs="auto" md="auto" class="d-flex flex-column-reverse">
           <Button variant="outline-info" size="md" type="button" onClick={() => setEditing(true)} ref={editButtonRef}>
             <BsFillPencilFill></BsFillPencilFill><span className="visually-hidden">{props.name}</span>
           </Button>{' '}

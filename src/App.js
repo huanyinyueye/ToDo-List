@@ -42,9 +42,9 @@ function App(props) {
     var ls = localStorage.getItem(id);
     
     const updatedTasks = tasks.map((task) => {
-      if (id === task.id) {    
-        localStorage.setItem(id, JSON.stringify({name:JSON.parse(ls).name,completed: !task.completed}));                             // if this task has the same ID as the edited task
-        return { ...task, completed: !task.completed };     // use object spread to make a new object whose `completed` prop has been inverted
+      if (id === task.id) {          // if this task has the same ID as the edited task
+        localStorage.setItem(id, JSON.stringify({name:JSON.parse(ls).name,completed: !task.completed}));    //Edit item in localstorage       
+        return { ...task, completed: !task.completed };           // use object spread to make a new object whose `completed` prop has been inverted
       }
       return task;
     });
@@ -53,19 +53,20 @@ function App(props) {
   }
 
 
-  function allStorage() {
+  function allStorage() {     //get previous item in localstorage
     let values = [];
     const keys = Object.keys(localStorage);
     let i = keys.length;
 
 
-    while ( i-- ) {
+    while ( i-- ) { 
       var ls = localStorage.getItem(keys[i]);
-
       if (!keys[i].includes("todo")) return;
         console.log('run')
         values.push({ id:keys[i], name: JSON.parse(ls).name,completed:JSON.parse(ls).completed });
+        
     }
+    
     return values;
   }
 
