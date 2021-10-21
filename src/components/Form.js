@@ -14,6 +14,7 @@ function MyForm(props) {
     props.addTask(name);
     setName("");
   }
+
   return (
     <Container className="justify-content-md-center">
 
@@ -36,7 +37,7 @@ function MyForm(props) {
             />
           </Col>
           <Col>
-            <Button type="submit" variant="success" size="md">
+            <Button type="submit" variant="success" size="md"> 
               <BsPlusLg></BsPlusLg>
             </Button>
           </Col>

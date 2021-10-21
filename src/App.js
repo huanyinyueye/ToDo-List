@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import MyForm from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import { nanoid } from "nanoid";
-import { Container, Row, Col, Image, Alert } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
@@ -40,15 +40,19 @@ function App(props) {
 
   function toggleTaskCompleted(id) {
     var ls = localStorage.getItem(id);
-    
+
     const updatedTasks = tasks.map((task) => {
       if (id === task.id) {          // if this task has the same ID as the edited task
-        localStorage.setItem(id, JSON.stringify({name:JSON.parse(ls).name,completed: !task.completed}));    //Edit item in localstorage       
-        return { ...task, completed: !task.completed };           // use object spread to make a new object whose `completed` prop has been inverted
+        localStorage.setItem(id, JSON.stringify({
+          name: JSON.parse(ls).name, completed: !task.completed,
+          year: JSON.parse(ls).year, month: JSON.parse(ls).month, date: JSON.parse(ls).date,
+          hour: JSON.parse(ls).hour, minute: JSON.parse(ls).minute, second: JSON.parse(ls).second
+        }));        //Edit item in localstorage       
+        return { ...task, completed: !task.completed };         // use object spread to make a new object whose `completed` prop has been inverted
       }
       return task;
     });
-     
+
     setTasks(updatedTasks);
   }
 
@@ -57,23 +61,28 @@ function App(props) {
     let values = [];
     const keys = Object.keys(localStorage);
     let i = keys.length;
+    var j = 0;
 
 
-    while ( i-- ) { 
-      var ls = localStorage.getItem(keys[i]);
-      if (!keys[i].includes("todo")) return;
-        console.log('run')
-        values.push({ id:keys[i], name: JSON.parse(ls).name,completed:JSON.parse(ls).completed });
-        
+    while (j < i) {
+      var ls = localStorage.getItem(keys[j]);
+      if (!keys[j].includes("todo")) return;
+
+      values.push({
+        id: keys[j], name: JSON.parse(ls).name, completed: JSON.parse(ls).completed,
+        year: JSON.parse(ls).year, month: JSON.parse(ls).month, date: JSON.parse(ls).date,
+        hour: JSON.parse(ls).hour, minute: JSON.parse(ls).minute, second: JSON.parse(ls).second
+      });
+      j++;
     }
-    
-    return values;
+
+
+    return (values);
   }
 
   useEffect(() => {
     setTasks(allStorage())
   }, []);
-
 
   function deleteTask(id) {
     const remainingTasks = tasks.filter((task) => id !== task.id);
@@ -91,7 +100,11 @@ function App(props) {
         return task;
       });
       var ls = localStorage.getItem(id);
-      localStorage.setItem(id, JSON.stringify({name:newName,completed: JSON.parse(ls).completed})); 
+      localStorage.setItem(id, JSON.stringify({
+        name: newName, completed: JSON.parse(ls).completed,
+        year: JSON.parse(ls).year, month: JSON.parse(ls).month, date: JSON.parse(ls).date,
+        hour: JSON.parse(ls).hour, minute: JSON.parse(ls).minute, second: JSON.parse(ls).second
+      }));
       setTasks(editedTaskList);
     }
     else {
@@ -101,6 +114,13 @@ function App(props) {
 
   const taskList = tasks
     .filter(FILTER_MAP[filter])
+    .sort((a, b) => { return a.year < b.year ? 1 : -1 })
+    .sort((a, b) => { return a.month < b.month ? 1 : -1 })
+    .sort((a, b) => { return a.date < b.date ? 1 : -1 })
+    .sort((a, b) => { return a.hour < b.hour ? 1 : -1 })
+    .sort((a, b) => { return a.minute < b.minute ? 1 : -1 })
+    .sort((a, b) => { return a.second < b.second ? 1 : -1 })
+    .sort((a, b) => { return a.completed > b.completed ? 1 : -1 })
     .map((task) => (
       <Todo
         id={task.id}
@@ -113,18 +133,35 @@ function App(props) {
       />
     ));
 
+
+  const [count, setCount] = useState(0);
+  const handleIncrement = () => {
+    setCount(prevCount => prevCount + 1);
+  };
+
   function addTask(name) {
+    var today = new Date(),
+      time = today.getFullYear() + ':' + today.getMonth() + ':' + today.getDate() + ':' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
     if (name) {
-      const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
-      localStorage.setItem(newTask.id,JSON.stringify({name:name,completed:false}))
+      const newTask = {
+        id: "todo-" + nanoid(), name: name, completed: false,
+        year: today.getFullYear(), month: today.getUTCMonth(), date: today.getDate(),
+        hour: today.getHours(), minute: today.getMinutes(), second: today.getSeconds()
+      };
+      localStorage.setItem(newTask.id, JSON.stringify({
+        name: name, completed: false,
+        year: today.getFullYear(), month: today.getUTCMonth(), date: today.getDate(),
+        hour: today.getHours(), minute: today.getMinutes(), second: today.getSeconds()
+      }))
       setTasks([...tasks, newTask]);
+      handleIncrement();
     }
     else {
       alert("Please input something");              // Alert when no data has been entered
     }
 
   }
-  
+
 
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
   const headingText = `${taskList.length} ${tasksNoun} remaining`;
@@ -137,7 +174,7 @@ function App(props) {
 
   return (
     <div class="p-3 mb-2 bg-dark text-white">
-      <Container >
+      <Container>
         <Row>
           <Col>
             <blockquote class="blockquote text-center">
@@ -152,7 +189,7 @@ function App(props) {
         </Row>
 
         <Row>
-            <MyForm addTask={addTask} />
+          <MyForm addTask={addTask} />
         </Row>
 
         <Row>

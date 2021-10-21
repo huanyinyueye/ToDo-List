@@ -35,6 +35,7 @@ export default function Todo(props) {
     }
   }, [wasEditing, isEditing]);
 
+  //const sortedvalues = values.sort(function(a,b){ return b.id-a.id});
   console.log("main render");
   //const [checked, setChecked] = useState(false);
   const editingTemplate = (
@@ -65,6 +66,7 @@ export default function Todo(props) {
       </Form>
     </Container>
   );
+  
   const viewTemplate = (
     <Container>
       <Row className="stack-small">
