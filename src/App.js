@@ -168,7 +168,7 @@ function App(props) {
         </br>
         <Row id="list-heading" tabIndex="-1" ref={listHeadingRef}>
           <h3>{headingText}</h3>
-          <h5><small class="text-muted">Sorted by changed time</small></h5>
+          <h5><small class="text-muted">Sorted by created time</small></h5>
           <h5><small class="text-muted">Click the filter above to checked tasks</small></h5>
         </Row>
 
