@@ -44,10 +44,7 @@ function App(props) {
     const updatedTasks = tasks.map((task) => {
       if (id === task.id) {          // if this task has the same ID as the edited task
         localStorage.setItem(id, JSON.stringify({
-          name: JSON.parse(ls).name, completed: !task.completed,
-          year: JSON.parse(ls).year, month: JSON.parse(ls).month, date: JSON.parse(ls).date,
-          hour: JSON.parse(ls).hour, minute: JSON.parse(ls).minute, second: JSON.parse(ls).second
-        }));        //Edit item in localstorage       
+          name: JSON.parse(ls).name, completed: !task.completed,today:JSON.parse(ls).today}));        //Edit item in localstorage       
         return { ...task, completed: !task.completed };         // use object spread to make a new object whose `completed` prop has been inverted
       }
       return task;
@@ -69,14 +66,9 @@ function App(props) {
       if (!keys[j].includes("todo")) return;
 
       values.push({
-        id: keys[j], name: JSON.parse(ls).name, completed: JSON.parse(ls).completed,
-        year: JSON.parse(ls).year, month: JSON.parse(ls).month, date: JSON.parse(ls).date,
-        hour: JSON.parse(ls).hour, minute: JSON.parse(ls).minute, second: JSON.parse(ls).second
-      });
+        id: keys[j], name: JSON.parse(ls).name, completed: JSON.parse(ls).completed,today:JSON.parse(ls).today });
       j++;
     }
-
-
     return (values);
   }
 
@@ -91,20 +83,16 @@ function App(props) {
   }
 
   function editTask(id, newName) {
+    var today = Date.now();
     if (newName) {
-
       const editedTaskList = tasks.map((task) => {
         if (id === task.id) {         // if this task has the same ID as the edited task
-          return { ...task, name: newName };
+          return { ...task, name: newName,completed: false,today:today};
         }
         return task;
       });
       var ls = localStorage.getItem(id);
-      localStorage.setItem(id, JSON.stringify({
-        name: newName, completed: JSON.parse(ls).completed,
-        year: JSON.parse(ls).year, month: JSON.parse(ls).month, date: JSON.parse(ls).date,
-        hour: JSON.parse(ls).hour, minute: JSON.parse(ls).minute, second: JSON.parse(ls).second
-      }));
+      localStorage.setItem(id, JSON.stringify({ name: newName, completed: JSON.parse(ls).completed,today: today}));
       setTasks(editedTaskList);
     }
     else {
@@ -114,12 +102,7 @@ function App(props) {
 
   const taskList = tasks
     .filter(FILTER_MAP[filter])
-    .sort((a, b) => { return a.year < b.year ? 1 : -1 })
-    .sort((a, b) => { return a.month < b.month ? 1 : -1 })
-    .sort((a, b) => { return a.date < b.date ? 1 : -1 })
-    .sort((a, b) => { return a.hour < b.hour ? 1 : -1 })
-    .sort((a, b) => { return a.minute < b.minute ? 1 : -1 })
-    .sort((a, b) => { return a.second < b.second ? 1 : -1 })
+    .sort((a, b) => { return a.today < b.today ? 1 : -1 })
     .sort((a, b) => { return a.completed > b.completed ? 1 : -1 })
     .map((task) => (
       <Todo
@@ -133,28 +116,14 @@ function App(props) {
       />
     ));
 
-
-  const [count, setCount] = useState(0);
-  const handleIncrement = () => {
-    setCount(prevCount => prevCount + 1);
-  };
-
   function addTask(name) {
-    var today = new Date(),
-      time = today.getFullYear() + ':' + today.getMonth() + ':' + today.getDate() + ':' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+    var today = Date.now();
     if (name) {
-      const newTask = {
-        id: "todo-" + nanoid(), name: name, completed: false,
-        year: today.getFullYear(), month: today.getUTCMonth(), date: today.getDate(),
-        hour: today.getHours(), minute: today.getMinutes(), second: today.getSeconds()
-      };
+      const newTask = { id: "todo-" + nanoid(), name: name, completed: false,today:today };
       localStorage.setItem(newTask.id, JSON.stringify({
-        name: name, completed: false,
-        year: today.getFullYear(), month: today.getUTCMonth(), date: today.getDate(),
-        hour: today.getHours(), minute: today.getMinutes(), second: today.getSeconds()
-      }))
+        name: name, completed: false,today:today}))
       setTasks([...tasks, newTask]);
-      handleIncrement();
+
     }
     else {
       alert("Please input something");              // Alert when no data has been entered
@@ -173,7 +142,7 @@ function App(props) {
   }, [tasks.length, prevTaskLength]);
 
   return (
-    <div class="p-3 mb-2 bg-dark text-white">
+    <div class="p-3 mb-2 bg-dark text-white vh-100">
       <Container>
         <Row>
           <Col>
@@ -198,7 +167,9 @@ function App(props) {
         <br>
         </br>
         <Row id="list-heading" tabIndex="-1" ref={listHeadingRef}>
-          {headingText}
+          <h3>{headingText}</h3>
+          <h5><small class="text-muted">Sorted by changed time</small></h5>
+          <h5><small class="text-muted">Click the filter above to checked tasks</small></h5>
         </Row>
 
         <Row>
